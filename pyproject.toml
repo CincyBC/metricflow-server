@@ -12,18 +12,18 @@ dependencies = [
     "fastapi>=0.104",
     "uvicorn[standard]>=0.24",
     "pydantic-settings>=2.0",
-    "metricflow>=0.207.3,<0.209.0",
-    "dbt-metricflow>=0.8.2,<0.9.0",
+    "metricflow>=0.209.0",
+    "dbt-metricflow>=0.11.0",
 ]
 
 [project.optional-dependencies]
 mcp = ["mcp>=1.0"]
-bigquery = ["dbt-bigquery>=1.7"]
-clickhouse = ["dbt-clickhouse>=1.7"]
-databricks = ["dbt-databricks>=1.7"]
-postgres = ["dbt-postgres>=1.7"]
-redshift = ["dbt-redshift>=1.7"]
-snowflake = ["dbt-snowflake>=1.7"]
+bigquery = ["dbt-bigquery>=1.10"]
+clickhouse = ["dbt-clickhouse>=1.9"]
+databricks = ["dbt-databricks>=1.10"]
+postgres = ["dbt-postgres>=1.9"]
+redshift = ["dbt-redshift>=1.9"]
+snowflake = ["dbt-snowflake>=1.10"]
 
 [project.scripts]
 metricflow-server = "metricflow_server.main:cli"
