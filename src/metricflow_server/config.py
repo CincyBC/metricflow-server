@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     host: str = "0.0.0.0"
     port: int = 8080
     log_level: str = "info"
+    allowed_hosts: list[str] = []
 
     model_config = {
         "env_prefix": "MF_",

@@ -12,6 +12,7 @@ from fastapi import Request
 from fastapi.responses import JSONResponse
 from fastapi.security import HTTPBearer
 from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 from metricflow.engine.metricflow_engine import MetricFlowQueryRequest
 from metricflow_semantics.errors.error_classes import (
     CustomerFacingSemanticException,
@@ -21,11 +22,18 @@ from metricflow_semantics.errors.error_classes import (
 from metricflow_server.api.routes import _serialize_dimension
 from metricflow_server.api.schemas import serialize_cell
 from metricflow_server.auth import check_api_key
+from metricflow_server.config import settings
 from metricflow_server.engine_manager import engine_manager
 
 logger = logging.getLogger(__name__)
 
-_mcp = FastMCP("metricflow", streamable_http_path="/")
+_mcp = FastMCP(
+    "metricflow",
+    streamable_http_path="/",
+    transport_security=TransportSecuritySettings(
+        allowed_hosts=settings.allowed_hosts,
+    ) if settings.allowed_hosts else None,
+)
 _bearer = HTTPBearer(auto_error=False)
 
 
