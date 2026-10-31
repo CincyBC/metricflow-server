@@ -15,7 +15,9 @@ API_KEY = "test-api-key"
 ADMIN_KEY = "test-admin-key"
 
 
-@pytest.fixture
+# Module-scoped: the MCP StreamableHTTPSessionManager can only run once per process,
+# so the app lifespan must not be re-entered per test.
+@pytest.fixture(scope="module")
 def client():
     with patch("metricflow_server.engine_manager.EngineManager.init_adapter"):
         with TestClient(app, raise_server_exceptions=False) as c:
@@ -35,10 +37,10 @@ def mock_engine():
     metric.label = None
     dim = MagicMock()
     dim.name = "location_name"
-    dim.qualified_name = "location__location_name"
+    dim.dunder_name = "location__location_name"
     dim.description = None
     dim.label = None
-    from dbt_semantic_interfaces.type_enums import DimensionType
+    from metricflow_semantic_interfaces.type_enums import DimensionType
     dim.type = DimensionType.CATEGORICAL
     dim.type_params = None
     metric.dimensions = [dim]

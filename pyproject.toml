@@ -12,12 +12,12 @@ dependencies = [
     "fastapi>=0.104",
     "uvicorn[standard]>=0.24",
     "pydantic-settings>=2.0",
-    "metricflow>=0.209.0",
-    "dbt-metricflow>=0.11.0",
+    "metricflow>=0.213.0",
+    "dbt-metricflow>=0.15.0",
 ]
 
 [project.optional-dependencies]
-mcp = ["mcp>=1.0"]
+mcp = ["mcp>=1.0,<2"]
 bigquery = ["dbt-bigquery>=1.10"]
 clickhouse = ["dbt-clickhouse>=1.9"]
 databricks = ["dbt-databricks>=1.10"]
