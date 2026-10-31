@@ -11,7 +11,7 @@ import logging
 from fastapi import Request
 from fastapi.responses import JSONResponse
 from fastapi.security import HTTPBearer
-from mcp.server.fastmcp import FastMCP
+from mcp.server.mcpserver import MCPServer
 from mcp.server.transport_security import TransportSecuritySettings
 from metricflow.engine.metricflow_engine import MetricFlowQueryRequest
 from metricflow_semantics.errors.error_classes import (
@@ -27,13 +27,7 @@ from metricflow_server.engine_manager import engine_manager
 
 logger = logging.getLogger(__name__)
 
-_mcp = FastMCP(
-    "metricflow",
-    streamable_http_path="/",
-    transport_security=TransportSecuritySettings(
-        allowed_hosts=settings.allowed_hosts,
-    ) if settings.allowed_hosts else None,
-)
+_mcp = MCPServer("metricflow")
 _bearer = HTTPBearer(auto_error=False)
 
 
@@ -56,9 +50,14 @@ class _AuthMiddleware:
 
 
 # Build the Starlette app and wrap it with auth
-_mcp_starlette = _mcp.streamable_http_app()
+_mcp_starlette = _mcp.streamable_http_app(
+    streamable_http_path="/",
+    transport_security=TransportSecuritySettings(
+        allowed_hosts=settings.allowed_hosts,
+    ) if settings.allowed_hosts else None,
+)
 mcp_app = _AuthMiddleware(_mcp_starlette)
-mcp_session_manager = _mcp._session_manager
+mcp_session_manager = _mcp.session_manager
 
 
 # ------------------------------------------------------------------
